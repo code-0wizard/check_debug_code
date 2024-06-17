@@ -5,6 +5,7 @@ module CheckDebugCode
     end
 
     def call(env)
+      Rails.logger.info "hogehoge"
       directory = Rails.root.to_s
       matching_files = search_console_log_with_grep(directory)
 
