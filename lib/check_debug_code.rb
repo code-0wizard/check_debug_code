@@ -1,8 +1,3 @@
-# frozen_string_literal: true
-
-require_relative "check_debug_code/version"
-
-module CheckDebugCode
-  class Error < StandardError; end
-  # Your code goes here...
-end
+require "check_debug_code/version"
+require "check_debug_code/middleware"
+require "check_debug_code/railtie" if defined?(Rails)
