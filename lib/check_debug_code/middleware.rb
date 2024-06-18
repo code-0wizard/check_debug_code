@@ -18,6 +18,10 @@ module CheckDebugCode
       [status, headers, response]
     end
 
+    def hoge
+      p 'hoge'
+    end
+
     private
 
     def search_console_log_with_grep(directory)
