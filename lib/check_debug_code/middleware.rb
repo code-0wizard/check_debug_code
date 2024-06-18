@@ -18,7 +18,7 @@ module CheckDebugCode
       [status, headers, response]
     end
 
-    def hoge
+    def self.hoge
       p 'hoge'
     end
 
