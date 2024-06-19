@@ -6,7 +6,7 @@ module CheckDebugCode
 
     def call(env)
       matching_files = search_files_for_strings
-
+      puts "matching_files: #{matching_files}"
       # log_to_console(matching_files)
       if !matching_files.nil?
         puts "hoge1"
@@ -22,17 +22,12 @@ module CheckDebugCode
     private
 
     def search_files_for_strings
-      require 'benchmark'
-      time = Benchmark.realtime do
-        target_file_extensions = Rails.configuration.x.check_debug_code.target_file_extensions
-        target_strings = Rails.configuration.x.check_debug_code.target_strings
-        include_extensions = target_file_extensions.map { |ext| "--include='*.#{ext}'" }.join(' ')
-        search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
-        result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
-        result.split("\n")
-        Rails.logger.info "結果: #{result}"
-      end
-      puts "処理概要 #{time}s"
+      target_file_extensions = Rails.configuration.x.check_debug_code.target_file_extensions
+      target_strings = Rails.configuration.x.check_debug_code.target_strings
+      include_extensions = target_file_extensions.map { |ext| "--include='*.#{ext}'" }.join(' ')
+      search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
+      result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
+      result.split("\n")
     end
 
     # def log_to_console(matching_files)
@@ -40,7 +35,6 @@ module CheckDebugCode
     # end
 
     def log_to_rails(matching_files)
-      puts "hoge2"
       Rails.logger.info "マッチしたファイルは: #{matching_files.join(', ')}"
     end
 
