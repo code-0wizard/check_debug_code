@@ -5,12 +5,10 @@ module CheckDebugCode
     end
 
     def call(env)
-      Rails.logger.info "hogehoge"
-      directry = Rails.root.to_s
-      matching_files = search_console_log_with_grep(directry)
+      matching_files = search_files_for_strings
 
       # log_to_console(matching_files)
-      log_to_rails(matching_files)
+      # log_to_rails(matching_files)
 
       status, headers, response = @app.call(env)
       response = append_to_response_footer(response, matching_files)
@@ -33,8 +31,12 @@ module CheckDebugCode
 
     private
 
-    def search_console_log_with_grep(directory)
-      result = `grep -rl 'console.log' #{directory}`
+    def search_files_for_strings
+      target_file_extensions = ['rb', 'js', 'erb']
+      target_strings = ['console.log', 'debugger']
+      include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
+      search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
+      result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
       result.split("\n")
     end
 
