@@ -18,38 +18,15 @@ module CheckDebugCode
       [status, headers, response]
     end
 
-    def self.find
-      require 'benchmark'
-        result = Benchmark.realtime do
-        require 'find'
-
-        matching_files = []
-        directry = Rails.root.to_s
-
-        Find.find(directry) do |path|
-          next unless File.file?(path)
-          next unless File.extname(path) == '.rb' || File.extname(path) == '.js'
-      
-          File.open(path, "r") do |file|
-            file.each_line do |line|
-              if line.include?('console.log')
-                matching_files << path
-                break
-              end
-            end
-          end
-        end
-      
-        matching_files
-      end
-      puts "処理概要 #{result}s"
-    end
-
     def self.grep
       require 'benchmark'
       result = Benchmark.realtime do
-        result = `grep -rl 'console.log' #{Rails.root.to_s}`
-        result.split("\n")
+        target_file_extensions = ['rb', 'js', 'erb']
+        target_strings = ['console.log', 'debugger']
+        include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
+        search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
+        result = `grep -rl  #{include_extensions} #{search_patterns} '/Users/hataken/Desktop/check_debug_code'`
+        puts result.split("\n")
       end
       puts "処理概要 #{result}s"
     end
