@@ -2,9 +2,7 @@ require 'rails/generators'
 
 module CheckDebugCode
   class InstallGenerator < Rails::Generators::Base
-    source_root File.expand_path('templates', __dir__)
-
-    def create_initializer_file
+    def enable_in_development
       environment(nil, env: 'development') do
         <<-FILE
           config.after_initialize do
@@ -17,7 +15,7 @@ module CheckDebugCode
           end
         FILE
       end
-
+      say 'Enabled check_debug_code in config/environments/development.rb'
     end
   end
 end
