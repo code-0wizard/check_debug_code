@@ -9,7 +9,8 @@ module CheckDebugCode
 
       # log_to_console(matching_files)
       if !matching_files.nil?
-        log_to_rails(matching_files) if  Rails.configuration.x.check_debug_code.logger
+        puts "hoge1"
+        log_to_rails(matching_files) if Rails.configuration.x.check_debug_code.logger
       end
 
       status, headers, response = @app.call(env)
@@ -39,6 +40,7 @@ module CheckDebugCode
     # end
 
     def log_to_rails(matching_files)
+      puts "hoge2"
       Rails.logger.info "マッチしたファイルは: #{matching_files.join(', ')}"
     end
 
