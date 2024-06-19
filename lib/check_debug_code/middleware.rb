@@ -5,6 +5,7 @@ module CheckDebugCode
     end
 
     def call(env)
+      Rails.logger.info "hogehoge"
       matching_files = search_files_for_strings
 
       # log_to_console(matching_files)
