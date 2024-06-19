@@ -4,12 +4,7 @@ module CheckDebugCode
       app.middleware.use CheckDebugCode::Middleware
 
       Rails.logger.info "ホゲホゲ"
-      
-      config.after_initialize do
-        unless Rails.env.production?
-          CheckDebugCode::InstallGenerator.start
-        end
-      end
+
     end
   end
 end
