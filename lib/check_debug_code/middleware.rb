@@ -32,7 +32,7 @@ module CheckDebugCode
     private
 
     def search_files_for_strings
-      target_file_extensions = Rails.application.config.check_debug_code.target_file_extensions
+      target_file_extensions = Rails.configuration.target_file_extensions
       Rails.logger.info "#{target_file_extensions}"
       target_strings = ['console.log', 'debugger']
       include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
