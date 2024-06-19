@@ -5,11 +5,11 @@ module CheckDebugCode
     def enable_in_development
       environment(nil, env: 'development') do
         <<~FILE
-          config.target_file_extensions = ['rb', 'js', 'erb']
-          config.target_strings         = ['console.log', 'debugger']
-          config.rails_logger           = true
-          config.console                = true
-          config.add_footer             = true
+          config.x.check_debug_code.target_file_extensions = ['rb', 'js', 'erb']
+          config.x.check_debug_code.target_strings         = ['console.log', 'debugger']
+          config.x.check_debug_code.logger                 = true
+          config.x.check_debug_code.console                = true
+          config.x.check_debug_code.add_footer             = true
         FILE
       end
 
@@ -20,11 +20,11 @@ module CheckDebugCode
 
       environment(nil, env: 'test') do
         <<~FILE
-          config.target_file_extensions = ['rb', 'js', 'erb']
-          config.target_strings         = ['console.log', 'debugger']
-          config.rails_logger           = true
-          config.console                = true
-          config.add_footer             = true
+          config.x.check_debug_code.target_file_extensions = ['rb', 'js', 'erb']
+          config.x.check_debug_code.target_strings         = ['console.log', 'debugger']
+          config.x.check_debug_code.logger                 = true
+          config.x.check_debug_code.console                = true
+          config.x.check_debug_code.add_footer             = true
         FILE
       end
     end

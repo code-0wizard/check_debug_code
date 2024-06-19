@@ -9,7 +9,7 @@ module CheckDebugCode
 
       # log_to_console(matching_files)
       if !matching_files.nil?
-        log_to_rails(matching_files) if  Rails.configuration.rails_logger
+        log_to_rails(matching_files) if  Rails.configuration.x.check_debug_code.logger
       end
 
       status, headers, response = @app.call(env)
@@ -23,8 +23,8 @@ module CheckDebugCode
     def search_files_for_strings
       require 'benchmark'
       time = Benchmark.realtime do
-        target_file_extensions = Rails.configuration.target_file_extensions
-        target_strings = Rails.configuration.target_strings
+        target_file_extensions = Rails.configuration.x.check_debug_code.target_file_extensions
+        target_strings = Rails.configuration.x.check_debug_code.target_strings
         include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
         search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
         Rails.logger.info "include_extensions: #{include_extensions}"
