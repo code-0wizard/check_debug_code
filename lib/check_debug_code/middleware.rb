@@ -8,8 +8,9 @@ module CheckDebugCode
       matching_files = search_files_for_strings
 
       # log_to_console(matching_files)
-      # log_to_rails(matching_files)
-      log_to_rails(matching_files) if  Rails.configuration.rails_logger
+      if !matching_files.nil?
+        log_to_rails(matching_files) if  Rails.configuration.rails_logger
+      end
 
       status, headers, response = @app.call(env)
       response = append_to_response_footer(response, matching_files)
@@ -26,6 +27,8 @@ module CheckDebugCode
         target_strings = Rails.configuration.target_strings
         include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
         search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
+        Rails.logger.info "include_extensions: #{include_extensions}"
+        Rails.logger.info "search_patterns: #{search_patterns}"
         result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
         result.split("\n")
       end
