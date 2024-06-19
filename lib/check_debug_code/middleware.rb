@@ -25,7 +25,7 @@ module CheckDebugCode
       time = Benchmark.realtime do
         target_file_extensions = Rails.configuration.x.check_debug_code.target_file_extensions
         target_strings = Rails.configuration.x.check_debug_code.target_strings
-        include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
+        include_extensions = target_file_extensions.map { |ext| "--include='*.#{ext}'" }.join(' ')
         search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
         Rails.logger.info "include_extensions: #{include_extensions}"
         Rails.logger.info "search_patterns: #{search_patterns}"
