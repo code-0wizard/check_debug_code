@@ -6,8 +6,8 @@ module CheckDebugCode
 
     def call(env)
       Rails.logger.info "hogehoge"
-      directory = Rails.root.to_s
-      matching_files = search_console_log_with_grep(directory)
+      directry = Rails.root.to_s
+      matching_files = search_console_log_with_grep(directry)
 
       # log_to_console(matching_files)
       log_to_rails(matching_files)
@@ -24,7 +24,7 @@ module CheckDebugCode
         require 'find'
 
         matching_files = []
-        directory = Rails.root.to_s
+        directry = Rails.root.to_s
 
         Find.find(directry) do |path|
           next unless File.file?(path)
