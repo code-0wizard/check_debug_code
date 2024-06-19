@@ -9,7 +9,7 @@ module CheckDebugCode
 
       # log_to_console(matching_files)
       # log_to_rails(matching_files)
-      log_to_rails(matching_files) if  Rails.configuration.logger
+      log_to_rails(matching_files) if  Rails.configuration.rails_logger
 
       status, headers, response = @app.call(env)
       response = append_to_response_footer(response, matching_files)

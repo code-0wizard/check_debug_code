@@ -7,9 +7,9 @@ module CheckDebugCode
         <<~FILE
           config.target_file_extensions = ['rb', 'js', 'erb']
           config.target_strings         = ['console.log', 'debugger']
-          config.logger                 = TRUE
-          config.console                = TRUE
-          config.add_footer             = TRUE
+          config.rails_logger           = true
+          config.console                = true
+          config.add_footer             = true
         FILE
       end
 
@@ -22,9 +22,9 @@ module CheckDebugCode
         <<~FILE
           config.target_file_extensions = ['rb', 'js', 'erb']
           config.target_strings         = ['console.log', 'debugger']
-          config.logger                 = TRUE
-          config.console                = TRUE
-          config.add_footer             = TRUE
+          config.rails_logger           = true
+          config.console                = true
+          config.add_footer             = true
         FILE
       end
     end
