@@ -5,7 +5,6 @@ module CheckDebugCode
     end
 
     def call(env)
-      Rails.logger.info "hogehoge"
       matching_files = search_files_for_strings
 
       # log_to_console(matching_files)
@@ -38,7 +37,8 @@ module CheckDebugCode
       include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
       search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
       result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
-      result.split("\n")
+      # result.split("\n")
+      Rails.logger.info "#{result}"
     end
 
     # def log_to_console(matching_files)
