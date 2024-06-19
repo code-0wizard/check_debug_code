@@ -25,7 +25,7 @@ module CheckDebugCode
         target_strings = ['console.log', 'debugger']
         include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
         search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
-        result = `grep -rl  #{include_extensions} #{search_patterns} '/Users/hataken/Desktop/check_debug_code'`
+        result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
         puts result.split("\n")
       end
       puts "処理概要 #{result}s"
