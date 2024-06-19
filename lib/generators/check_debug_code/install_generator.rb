@@ -5,36 +5,28 @@ module CheckDebugCode
     def enable_in_development
       environment(nil, env: 'development') do
         <<~FILE
-          config.after_initialize do
-            Bullet.enable        = true
-            Bullet.alert         = true
-            Bullet.bullet_logger = true
-            Bullet.console       = true
-            Bullet.rails_logger  = true
-            Bullet.add_footer    = true
-          end
-
+          config.target_file_extensions = ['rb', 'js', 'erb']
+          config.target_strings         = ['console.log', 'debugger']
+          config.logger                 = TRUE
+          config.console                = TRUE
+          config.add_footer             = TRUE
         FILE
       end
 
-      say 'Enabled bullet in config/environments/development.rb'
     end
 
     def enable_in_test
-      return unless yes?('Would you like to enable bullet in test environment? (y/n)')
+      return unless yes?('Would you like to enable check_debug_code in test environment? (y/n)')
 
       environment(nil, env: 'test') do
         <<~FILE
-          config.after_initialize do
-            Bullet.enable        = true
-            Bullet.bullet_logger = true
-            Bullet.raise         = true # raise an error if n+1 query occurs
-          end
-
+          config.target_file_extensions = ['rb', 'js', 'erb']
+          config.target_strings         = ['console.log', 'debugger']
+          config.logger                 = TRUE
+          config.console                = TRUE
+          config.add_footer             = TRUE
         FILE
       end
-
-      say 'Enabled bullet in config/environments/test.rb'
     end
 
   end

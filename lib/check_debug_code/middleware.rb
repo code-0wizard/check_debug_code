@@ -9,6 +9,7 @@ module CheckDebugCode
 
       # log_to_console(matching_files)
       # log_to_rails(matching_files)
+      log_to_rails(matching_files) if  Rails.configuration.logger
 
       status, headers, response = @app.call(env)
       response = append_to_response_footer(response, matching_files)
@@ -16,30 +17,19 @@ module CheckDebugCode
       [status, headers, response]
     end
 
-    def self.grep
-      require 'benchmark'
-      result = Benchmark.realtime do
-        target_file_extensions = ['rb', 'js', 'erb']
-        target_strings = ['console.log', 'debugger']
-        include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
-        search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
-        result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
-        puts result.split("\n")
-      end
-      puts "処理概要 #{result}s"
-    end
-
     private
 
     def search_files_for_strings
-      target_file_extensions = Rails.configuration.target_file_extensions
-      Rails.logger.info "#{target_file_extensions}"
-      target_strings = ['console.log', 'debugger']
-      include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
-      search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
-      result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
-      # result.split("\n")
-      Rails.logger.info "#{result}"
+      require 'benchmark'
+      time = Benchmark.realtime do
+        target_file_extensions = Rails.configuration.target_file_extensions
+        target_strings = Rails.configuration.target_strings
+        include_extensions = target_file_extensions.map { |ext| "--include=*.#{ext}" }.join(' ')
+        search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
+        result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
+        result.split("\n")
+      end
+      puts "処理概要 #{time}s"
     end
 
     # def log_to_console(matching_files)
@@ -47,7 +37,7 @@ module CheckDebugCode
     # end
 
     def log_to_rails(matching_files)
-      Rails.logger.info "Matching files: #{matching_files.join(', ')}"
+      Rails.logger.info "マッチしたファイルは: #{matching_files.join(', ')}"
     end
 
     def append_to_response_footer(response, matching_files)
