@@ -27,10 +27,9 @@ module CheckDebugCode
         target_strings = Rails.configuration.x.check_debug_code.target_strings
         include_extensions = target_file_extensions.map { |ext| "--include='*.#{ext}'" }.join(' ')
         search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
-        Rails.logger.info "include_extensions: #{include_extensions}"
-        Rails.logger.info "search_patterns: #{search_patterns}"
         result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
         result.split("\n")
+        Rails.logger.info "結果: #{result}"
       end
       puts "処理概要 #{time}s"
     end
