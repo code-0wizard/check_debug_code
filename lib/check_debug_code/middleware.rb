@@ -31,8 +31,9 @@ module CheckDebugCode
       formatted_strings = target_strings.map { |str| "-e #{str}" }.join(' ') 
 
       result = `grep -rl  #{formatted_file_extensions} #{formatted_strings} '#{Rails.root.to_s}'`
-      filtered_result = result.split("\n").reject { |file| excluded_files.include?(file) }
-      filtered_result.split("\n")
+      formatted_result = result.split("\n").map { |file| file.sub("#{Rails.root}/", '') }
+      filtered_result = formatted_result.reject { |file| excluded_files.include?(file) }
+      filtered_result
     end
 
     # def log_to_console(matching_files)
