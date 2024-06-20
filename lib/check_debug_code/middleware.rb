@@ -31,7 +31,7 @@ module CheckDebugCode
       formatted_strings = target_strings.map { |str| "-e #{str}" }.join(' ') 
 
       result = `grep -rl  #{formatted_file_extensions} #{formatted_strings} '#{Rails.root.to_s}'`
-      filtered_result = result.reject { |file| excluded_files.include?(file) }
+      filtered_result = result.split("\n").reject { |file| excluded_files.include?(file) }
       filtered_result.split("\n")
     end
 
