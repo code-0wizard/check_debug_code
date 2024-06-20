@@ -8,6 +8,7 @@ module CheckDebugCode
       matching_files = search_files_for_strings
       # log_to_console(matching_files)
       if !matching_files.nil?
+
         log_to_rails(matching_files) if Rails.configuration.x.check_debug_code.logger
       end
 
@@ -31,10 +32,11 @@ module CheckDebugCode
       formatted_strings = target_strings.map { |str| "-e #{str}" }.join(' ')
       rails_root_path = Rails.root.to_s
 
-      result = `grep -rl  #{formatted_file_extensions} #{formatted_strings} '#{rails_root_path}'`
-      formatted_result = result.split("\n").map { |file| file.sub("#{rails_root_path}/", '') }
-      filtered_result = formatted_result.reject { |file| excluded_files.include?(file) }
-      filtered_result
+      result = `grep -rn  #{formatted_file_extensions} #{formatted_strings} '#{rails_root_path}'`
+      puts result
+      # formatted_result = result.split("\n").map { |file| file.sub("#{rails_root_path}/", '') }
+      # filtered_result = formatted_result.reject { |file| excluded_files.include?(file) }
+      # filtered_result
     end
 
     # def log_to_console(matching_files)
