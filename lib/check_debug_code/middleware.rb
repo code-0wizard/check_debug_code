@@ -13,7 +13,6 @@ module CheckDebugCode
       status, headers, response = @app.call(env)
       response = append_to_response_footer(response, matching_file_data)
       [status, headers, response]
-      puts response
     end
 
     private
