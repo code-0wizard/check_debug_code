@@ -28,10 +28,11 @@ module CheckDebugCode
                         ]
 
       formatted_file_extensions = target_file_extensions.map { |ext| "--include='*.#{ext}'" }.join(' ')
-      formatted_strings = target_strings.map { |str| "-e #{str}" }.join(' ') 
+      formatted_strings = target_strings.map { |str| "-e #{str}" }.join(' ')
+      rails_root_path = Rails.root.to_s
 
-      result = `grep -rl  #{formatted_file_extensions} #{formatted_strings} '#{Rails.root.to_s}'`
-      formatted_result = result.split("\n").map { |file| file.sub("#{Rails.root}/", '') }
+      result = `grep -rl  #{formatted_file_extensions} #{formatted_strings} '#{rails_root_path}'`
+      formatted_result = result.split("\n").map { |file| file.sub("#{rails_root_path}/", '') }
       filtered_result = formatted_result.reject { |file| excluded_files.include?(file) }
       filtered_result
     end
