@@ -23,8 +23,8 @@ module CheckDebugCode
       target_file_extensions = Rails.configuration.x.check_debug_code.target_file_extensions
       target_strings = Rails.configuration.x.check_debug_code.target_strings
       excluded_files = [
-                          "/config/environments/development.rb", 
-                          "/config/environments/test.rb"
+                          "config/environments/development.rb", 
+                          "config/environments/test.rb"
                         ]
 
       formatted_file_extensions = target_file_extensions.map { |ext| "--include='*.#{ext}'" }.join(' ')
