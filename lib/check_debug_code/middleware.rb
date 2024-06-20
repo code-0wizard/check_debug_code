@@ -33,10 +33,22 @@ module CheckDebugCode
       rails_root_path = Rails.root.to_s
 
       result = `grep -rn  #{formatted_file_extensions} #{formatted_strings} '#{rails_root_path}'`
-      puts result
-      # formatted_result = result.split("\n").map { |file| file.sub("#{rails_root_path}/", '') }
-      # filtered_result = formatted_result.reject { |file| excluded_files.include?(file) }
-      # filtered_result
+
+      filtered_results = result.split("\n").reject do |line|
+        excluded_files.any? { |excluded| line.include?(excluded) }
+      end
+
+      formatted_results = filtered_results.map do |line|
+        file, line_number, matched_string = line.split(':', 3)
+        relative_path = file.sub("#{rails_root_path}/", '')
+        {
+          file_name: relative_path,
+          number_of_lines: line_number.to_i,
+          matching_string: matched_string.strip
+        }
+      end
+
+      puts filtered_results
     end
 
     # def log_to_console(matching_files)
