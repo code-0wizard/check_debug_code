@@ -48,7 +48,7 @@ module CheckDebugCode
         }
       end
 
-      puts filtered_results
+      puts formatted_results
     end
 
     # def log_to_console(matching_files)
