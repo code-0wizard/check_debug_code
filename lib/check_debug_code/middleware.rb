@@ -11,6 +11,7 @@ module CheckDebugCode
         log_to_rails(matching_file_data) if Rails.configuration.x.check_debug_code.logger
       end
       status, headers, response = @app.call(env)
+      puts response
       response = append_to_response_footer(response, matching_file_data)
       [status, headers, response]
     end
