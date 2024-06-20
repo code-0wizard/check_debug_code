@@ -5,29 +5,26 @@ module CheckDebugCode
     end
 
     def call(env)
-      matching_files = search_files_for_strings
+      matching_file_data = search_file
       # log_to_console(matching_files)
-      if !matching_files.nil?
-
-        log_to_rails(matching_files) if Rails.configuration.x.check_debug_code.logger
+      if !matching_file_data.nil?
+        puts matching_file_data
+        log_to_rails(matching_file_data) if Rails.configuration.x.check_debug_code.logger
       end
-
       status, headers, response = @app.call(env)
-      response = append_to_response_footer(response, matching_files)
-
+      response = append_to_response_footer(response, matching_file_data)
       [status, headers, response]
     end
 
     private
 
-    def search_files_for_strings
+    def search_file
       target_file_extensions = Rails.configuration.x.check_debug_code.target_file_extensions
       target_strings = Rails.configuration.x.check_debug_code.target_strings
       excluded_files = [
                           "config/environments/development.rb", 
                           "config/environments/test.rb"
                         ]
-
       formatted_file_extensions = target_file_extensions.map { |ext| "--include='*.#{ext}'" }.join(' ')
       formatted_strings = target_strings.map { |str| "-e #{str}" }.join(' ')
       rails_root_path = Rails.root.to_s
@@ -42,21 +39,19 @@ module CheckDebugCode
         file, line_number, matched_string = line.split(':', 3)
         relative_path = file.sub("#{rails_root_path}/", '')
         {
-          file_name: relative_path,
-          number_of_lines: line_number.to_i,
+          file: relative_path,
+          line: line_number.to_i,
           matching_string: matched_string.strip
         }
       end
-
-      puts formatted_results
     end
 
     # def log_to_console(matching_files)
     #   Rails.logger.info "<script>console.log(#{matching_files.inspect});</script>"
     # end
 
-    def log_to_rails(matching_files)
-      Rails.logger.info "マッチしたファイルは: #{matching_files.join(', ')}"
+    def log_to_rails(data)
+      Rails.logger.info "マッチしたファイルは: #{data}"
     end
 
     def append_to_response_footer(response, matching_files)
