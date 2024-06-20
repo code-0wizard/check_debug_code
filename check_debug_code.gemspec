@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name = "check_debug_code"
   spec.version = CheckDebugCode::VERSION
   spec.authors = ["code-0wizard"]
-  spec.email = ["bb52119638@gmail.com"]
+  spec.email = ["vwe4g342fgD@gmail.com"]
 
   spec.summary = "A gem to check for debug code in Rails projects."
   spec.description =   "The CheckDebugCode gem searches for debug code like 'console.log' in your Rails project every time a request is made. It outputs the filenames containing the debug code to the browser console, view footer, and Rails logs. This helps developers ensure that debug statements are removed from production code."
