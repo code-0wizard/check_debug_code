@@ -8,7 +8,6 @@ module CheckDebugCode
       matching_file_data = search_file
       # log_to_console(matching_files)
       if !matching_file_data.nil?
-        puts matching_file_data
         log_to_rails(matching_file_data) if Rails.configuration.x.check_debug_code.logger
       end
       status, headers, response = @app.call(env)
@@ -51,7 +50,7 @@ module CheckDebugCode
     # end
 
     def log_to_rails(data)
-      Rails.logger.info "マッチしたファイルは: #{data}"
+      Rails.logger.info "\n<check_debug_code>\n #{data} \n<check_debug_code>\n"
     end
 
     def append_to_response_footer(response, matching_files)
