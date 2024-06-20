@@ -6,10 +6,8 @@ module CheckDebugCode
 
     def call(env)
       matching_files = search_files_for_strings
-      puts "matching_files: #{matching_files}"
       # log_to_console(matching_files)
       if !matching_files.nil?
-        puts "hoge1"
         log_to_rails(matching_files) if Rails.configuration.x.check_debug_code.logger
       end
 
@@ -24,10 +22,17 @@ module CheckDebugCode
     def search_files_for_strings
       target_file_extensions = Rails.configuration.x.check_debug_code.target_file_extensions
       target_strings = Rails.configuration.x.check_debug_code.target_strings
-      include_extensions = target_file_extensions.map { |ext| "--include='*.#{ext}'" }.join(' ')
-      search_patterns = target_strings.map { |str| "-e #{str}" }.join(' ')
-      result = `grep -rl  #{include_extensions} #{search_patterns} '#{Rails.root.to_s}'`
-      result.split("\n")
+      excluded_files = [
+                          "/config/environments/development.rb", 
+                          "/config/environments/test.rb"
+                        ]
+
+      formatted_file_extensions = target_file_extensions.map { |ext| "--include='*.#{ext}'" }.join(' ')
+      formatted_strings = target_strings.map { |str| "-e #{str}" }.join(' ') 
+
+      result = `grep -rl  #{formatted_file_extensions} #{formatted_strings} '#{Rails.root.to_s}'`
+      filtered_result = result.reject { |file| excluded_files.include?(file) }
+      filtered_result.split("\n")
     end
 
     # def log_to_console(matching_files)
