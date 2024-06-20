@@ -50,7 +50,7 @@ module CheckDebugCode
     # end
 
     def log_to_rails(data)
-      Rails.logger.info "\n<check_debug_code>\n #{data} \n<check_debug_code>\n"
+      Rails.logger.info "\n<check_debug_code>\n[\n #{data.join(",\n ")} \n]\n<check_debug_code>\n"
     end
 
     def append_to_response_footer(response, matching_files)
