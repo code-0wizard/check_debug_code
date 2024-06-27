@@ -4,9 +4,9 @@ module CheckDebugCode
 
   def execute_check
     matching_file_data = find_matching_files
-    # log_to_console(matching_files)
     if !matching_file_data.nil?
       log_to_rails(matching_file_data) if Rails.configuration.x.check_debug_code.logger
+      log_to_console(matching_file_data) if Rails.configuration.x.check_debug_code.console 
     end
   end
 
@@ -57,5 +57,14 @@ module CheckDebugCode
 
   def log_to_rails(data)
     Rails.logger.info "\n<check_debug_code>\n[\n #{data.join(",\n ")} \n]\n<check_debug_code>\n"
+  end
+
+  def log_to_console(data)
+    Rails.logger.info "It's OK"
+    render inline: %{
+      <script>
+        console.log(`\n<check_debug_code>\n[\n ${data.join(",\n ")} \n]\n<check_debug_code>\n`)
+      </script>
+    }
   end
 end
