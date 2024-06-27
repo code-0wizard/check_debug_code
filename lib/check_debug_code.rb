@@ -33,7 +33,7 @@ module CheckDebugCode
     strings.map { |str| "-e #{str}" }.join(' ')
   end
 
-  def filter_results(result, excluded_files)
+  def filter_results(result)
     excluded_files = [
       "config/environments/development.rb", 
       "config/environments/test.rb"
