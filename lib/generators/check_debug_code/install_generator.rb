@@ -7,9 +7,6 @@ module CheckDebugCode
         <<~FILE
           config.x.check_debug_code.target_file_extensions = ['rb', 'js', 'erb']
           config.x.check_debug_code.target_strings         = ['console.log', 'debugger']
-          config.x.check_debug_code.logger                 = true
-          config.x.check_debug_code.console                = true
-          config.x.check_debug_code.add_footer             = true
         FILE
       end
 
@@ -22,9 +19,6 @@ module CheckDebugCode
         <<~FILE
           config.x.check_debug_code.target_file_extensions = ['rb', 'js', 'erb']
           config.x.check_debug_code.target_strings         = ['console.log', 'debugger']
-          config.x.check_debug_code.logger                 = true
-          config.x.check_debug_code.console                = true
-          config.x.check_debug_code.add_footer             = true
         FILE
       end
     end

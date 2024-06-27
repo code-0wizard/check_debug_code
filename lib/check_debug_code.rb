@@ -4,9 +4,7 @@ module CheckDebugCode
 
   def execute_check
     @matching_file_data = find_matching_files
-    if !@matching_file_data.nil?
-      log_to_rails(@matching_file_data) if Rails.configuration.x.check_debug_code.logger
-    end
+    log_to_rails(@matching_file_data) if !@matching_file_data.nil?
   end
 
   def find_matching_files
